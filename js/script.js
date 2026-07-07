@@ -698,9 +698,7 @@ document.addEventListener(
     }
 );
 
-/* =====================================================
-   LOADING
-===================================================== */
+
 
 function showLoading() {
 
@@ -718,72 +716,46 @@ function hideLoading() {
 
 }
 
-/* =====================================================
-   LOAD JSON
-===================================================== */
+
+
 
 async function loadLayanan() {
-
     try {
-
         showLoading();
 
-        const response =
-            await fetch("data/layanan.json");
+      
+        const { data, error } = await supabaseClient
+            .from('layanan')
+            .select('*')
+            .order('id', { ascending: true }); 
 
-        layanan =
-            await response.json();
+        if (error) throw error;
 
-        layananFilter =
-            [...layanan];
+        layanan = data;
+        layananFilter = [...layanan];
 
         renderLayanan(layananFilter);
-
         updateStatistik();
-
         initSearch();
-
         initFilter();
-
+        
         hideLoading();
 
-    }
-
-    catch (error) {
-
-        console.error(error);
-
+    } catch (error) {
+        console.error("Gagal mengambil data dari Supabase:", error.message);
         hideLoading();
-
         serviceContainer.innerHTML =
-
         `
         <div class="empty-state">
-
             <i class="bi bi-database-x"></i>
-
-            <h3>
-
-                Data Tidak Ditemukan
-
-            </h3>
-
-            <p>
-
-                Gagal memuat data layanan.
-
-            </p>
-
+            <h3>Koneksi Terputus</h3>
+            <p>Gagal memuat data dari database layanan.</p>
         </div>
         `;
-
     }
-
 }
 
-/* =====================================================
-   RENDER CARD
-===================================================== */
+
 
 function renderLayanan(data) {
 
@@ -886,9 +858,7 @@ function renderLayanan(data) {
     });
 
 }
-/* =====================================================
-   SEARCH
-===================================================== */
+
 
 function initSearch() {
 
@@ -948,9 +918,7 @@ function initSearch() {
 
 }
 
-/* =====================================================
-   FILTER
-===================================================== */
+
 
 function initFilter() {
 
@@ -1021,9 +989,7 @@ function applyFilter() {
 
 }
 
-/* =====================================================
-   STATISTIK
-===================================================== */
+
 
 function updateStatistik() {
 
@@ -1034,9 +1000,7 @@ function updateStatistik() {
 
 }
 
-/* =====================================================
-   FLOW
-===================================================== */
+
 
 function loadFlow() {
 
@@ -1107,9 +1071,7 @@ function loadFlow() {
     });
 
 }
-/* =====================================================
-   SCROLL TO TOP
-===================================================== */
+
 
 function scrollButton() {
 
@@ -1143,9 +1105,7 @@ function scrollButton() {
 
 }
 
-/* =====================================================
-   NAVBAR EFFECT
-===================================================== */
+
 
 function navbarEffect() {
 
@@ -1170,9 +1130,7 @@ function navbarEffect() {
 
 }
 
-/* =====================================================
-   SMOOTH SCROLL
-===================================================== */
+
 
 function smoothScroll() {
 
@@ -1206,9 +1164,6 @@ function smoothScroll() {
 
 }
 
-/* =====================================================
-   INTERSECTION ANIMATION
-===================================================== */
 
 const observer = new IntersectionObserver(
 
@@ -1254,9 +1209,7 @@ window.addEventListener("load", () => {
 
 });
 
-/* =====================================================
-   HELPER
-===================================================== */
+
 
 function formatText(text) {
 
@@ -1284,9 +1237,6 @@ function capitalize(text) {
 
 }
 
-/* =====================================================
-   PRELOAD JSON
-===================================================== */
 
 async function preloadData() {
 
@@ -1314,9 +1264,7 @@ async function preloadData() {
 
 }
 
-/* =====================================================
-   PERFORMANCE
-===================================================== */
+
 
 window.addEventListener(
 
@@ -1326,6 +1274,7 @@ window.addEventListener(
 
 );
 
+<<<<<<< HEAD
 /* =====================================================
    DEBUG (DEV ONLY)
 ===================================================== */
@@ -1336,3 +1285,5 @@ window.addEventListener(
    END
 ===================================================== */
 >>>>>>> 896cb23 (Initial commit - Website Pelayanan Administrasi Kelurahan Sukaraja)
+=======
+>>>>>>> 015bb4b ((+))

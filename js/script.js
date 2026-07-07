@@ -80,66 +80,42 @@ function hideLoading() {
 }
 
 /* =====================================================
-   LOAD JSON
+   LOAD DARI SUPABASE
 ===================================================== */
-
 async function loadLayanan() {
-
     try {
-
         showLoading();
 
-        const response =
-            await fetch("data/layanan.json");
+        // Mengambil data dari tabel 'layanan' di Supabase
+        const { data, error } = await supabaseClient
+            .from('layanan')
+            .select('*')
+            .order('id', { ascending: true }); 
 
-        layanan =
-            await response.json();
+        if (error) throw error;
 
-        layananFilter =
-            [...layanan];
+        layanan = data;
+        layananFilter = [...layanan];
 
         renderLayanan(layananFilter);
-
         updateStatistik();
-
         initSearch();
-
         initFilter();
-
+        
         hideLoading();
 
-    }
-
-    catch (error) {
-
-        console.error(error);
-
+    } catch (error) {
+        console.error("Gagal mengambil data dari Supabase:", error.message);
         hideLoading();
-
         serviceContainer.innerHTML =
-
         `
         <div class="empty-state">
-
             <i class="bi bi-database-x"></i>
-
-            <h3>
-
-                Data Tidak Ditemukan
-
-            </h3>
-
-            <p>
-
-                Gagal memuat data layanan.
-
-            </p>
-
+            <h3>Koneksi Terputus</h3>
+            <p>Gagal memuat data dari database layanan.</p>
         </div>
         `;
-
     }
-
 }
 
 /* =====================================================
@@ -597,23 +573,7 @@ const observer = new IntersectionObserver(
 
 );
 
-window.addEventListener("load", () => {
 
-    document
-
-        .querySelectorAll(
-
-            ".service-card,.stat-card,.info-card"
-
-        )
-
-        .forEach(item => {
-
-            observer.observe(item);
-
-        });
-
-});
 
 /* =====================================================
    HELPER
@@ -649,31 +609,6 @@ function capitalize(text) {
    PRELOAD JSON
 ===================================================== */
 
-async function preloadData() {
-
-    try {
-
-        const response =
-
-            await fetch("data/layanan.json");
-
-        await response.json();
-
-    }
-
-    catch (error) {
-
-        console.warn(
-
-            "Preload gagal:",
-
-            error
-
-        );
-
-    }
-
-}
 
 /* =====================================================
    PERFORMANCE
